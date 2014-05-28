@@ -61,7 +61,7 @@ describe("Events", function(){
     EventTest.unbind();
     EventTest.trigger("yoyo");
     expect(spy).not.toHaveBeenCalled();
-    spy.reset()
+    spy.calls.reset();
     EventTest.trigger("daddyo");
     expect(spy).not.toHaveBeenCalled();
   });
@@ -72,7 +72,7 @@ describe("Events", function(){
     ListenTest.listenTo(EventTest, "daddyo", spy);
     EventTest.trigger("daddyo");
     expect(spy).toHaveBeenCalled();
-    spy.reset();
+    spy.calls.reset();
     ListenTest.stopListening(EventTest, "daddyo");
     EventTest.trigger("daddyo");
     expect(spy).not.toHaveBeenCalled();
@@ -121,7 +121,7 @@ describe("Events", function(){
     EventTest.one("indahouse", spy);
     EventTest.trigger("indahouse");
     expect(spy).toHaveBeenCalled();
-    spy.reset();
+    spy.calls.reset();
     EventTest.trigger("indahouse");
     expect(spy).not.toHaveBeenCalled();
   });
@@ -132,7 +132,7 @@ describe("Events", function(){
     ListenTest.listenToOnce(EventTest, 'indahouse', spy)
     EventTest.trigger("indahouse");
     expect(spy).toHaveBeenCalled();
-    spy.reset();
+    spy.calls.reset();
     EventTest.trigger("indahouse");
     expect(spy).not.toHaveBeenCalled();
   });
@@ -154,7 +154,7 @@ describe("Events", function(){
     ListenTest.stopListening();
     EventTest.trigger("house");
     expect(spy).not.toHaveBeenCalled();
-    spy.reset();
+    spy.calls.reset();
     EventTest.trigger("indahouse");
     expect(spy).not.toHaveBeenCalled();
   });
