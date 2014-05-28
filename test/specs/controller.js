@@ -130,7 +130,7 @@ describe("Controller", function(){
       asset.trigger("event2");
       asset.trigger("event3");
       expect(spy).toHaveBeenCalled();
-      expect(spy.callCount).toBe(3);
+      expect(spy..calls.count()).toBe(3);
     });
 
     it("can listen once for an event on a model instance", function(){

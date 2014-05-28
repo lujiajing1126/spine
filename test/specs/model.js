@@ -778,17 +778,17 @@ describe("Model", function(){
       expect(spy2).not.toHaveBeenCalled();
     });
 
-    it("should be able to unbind a single event that uses a callback another event is bind to.", function(){
+    it("should be able to unbind a single event that uses a callback another event is bound to.", function(){
       var asset = Asset.create({name: "cartoon world.png"});
       asset.bind("customEvent1 customEvent2", spy);
       asset.trigger("customEvent1");
       asset.trigger("customEvent2");
-      expect(spy.calls.length).toEqual(2);
+      expect(spy.calls.count()).toEqual(2);
       spy.calls.reset();
       asset.unbind("customEvent1");
       asset.trigger("customEvent1");
       asset.trigger("customEvent2");
-      expect(spy.calls.length).toEqual(1);
+      expect(spy.calls.count()).toEqual(1);
     });
 
     it("should be able to bind and unbind multiple events with a single call.", function(){
@@ -796,12 +796,12 @@ describe("Model", function(){
       asset.bind("customEvent1 customEvent2", spy)
       asset.trigger("customEvent1");
       asset.trigger("customEvent2");
-      expect(spy.calls.length).toEqual(2);
+      expect(spy.calls.count()).toEqual(2);
       spy.calls.reset();
       asset.unbind("customEvent1 customEvent2")
       asset.trigger("customEvent1");
       asset.trigger("customEvent2");
-      expect(spy.calls.length).toEqual(0);
+      expect(spy.calls.count()).toEqual(0);
     });
 
     it("should be able to unbind all events if no arguments given", function(){
@@ -809,12 +809,12 @@ describe("Model", function(){
       asset.bind("customEvent1 customEvent2", spy)
       asset.trigger("customEvent1");
       asset.trigger("customEvent2");
-      expect(spy.calls.length).toEqual(2);
+      expect(spy.calls.count()).toEqual(2);
       spy.calls.reset();
       asset.unbind();
       asset.trigger("customEvent1");
       asset.trigger("customEvent2");
-      expect(spy.calls.length).toEqual(0);
+      expect(spy.calls.count()).toEqual(0);
     });
 
     it("should not be able to unbind all events if given and undefined object", function(){
@@ -822,12 +822,12 @@ describe("Model", function(){
       asset.bind("customEvent1 customEvent2", spy)
       asset.trigger("customEvent1");
       asset.trigger("customEvent2");
-      expect(spy.calls.length).toEqual(2);
+      expect(spy.calls.count()).toEqual(2);
       spy.calls.reset();
       asset.unbind(undefined);
       asset.trigger("customEvent1");
       asset.trigger("customEvent2");
-      expect(spy.calls.length).toEqual(2);
+      expect(spy.calls.count()).toEqual(2);
     });
 
     it("should not unbind class-level callbacks", function(){
@@ -836,7 +836,7 @@ describe("Model", function(){
       asset.bind('customEvent2', function() {});
       asset.trigger('unbind');
       Asset.trigger('customEvent1');
-      expect(spy.calls.length).toEqual(1);
+      expect(spy.calls.count()).toEqual(1);
     });
 
     it("should unbind events on instance destroy", function(){
@@ -893,7 +893,7 @@ describe("Model", function(){
       asset.trigger("event2");
       asset.trigger("event3");
       expect(spy).toHaveBeenCalled();
-      expect(spy.callCount).toBe(3);
+      expect(spy.calls.count()).toBe(3);
     });
 
     it("can listen once for an event on a model instance", function(){

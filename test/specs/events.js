@@ -165,7 +165,7 @@ describe("Events", function(){
     var b = jasmine.createSpy("b");
     var c = jasmine.createSpy("c");
 
-    b.andCallFake(function () {
+    b.and.callFake(function() {
       EventTest.unbind("once", b);
     });
 
@@ -180,9 +180,9 @@ describe("Events", function(){
 
     EventTest.trigger("once");
 
-    expect(a.callCount).toBe(2);
-    expect(b.callCount).toBe(1);
-    expect(c.callCount).toBe(2);
+    expect(a.calls.count()).toBe(2);
+    expect(b.calls.count()).toBe(1);
+    expect(c.calls.count()).toBe(2);
   });
 
   it("can cancel propogation", function(){
