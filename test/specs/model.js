@@ -616,11 +616,12 @@ describe("Model", function(){
 
     it("can fire save events", function(){
       Asset.bind("save", spy);
-      var asset = Asset.create({name: "cartoon world.png"});
-      expect(spy).toHaveBeenCalledWith(asset, {name: "cartoon world.png"});
-
+      var asset = Asset.create({name: 'cartoon world.png'});
+      expect(spy).toHaveBeenCalled()
+      expect(spy.calls.count()).toEqual(1);
+      //expect(spy).toHaveBeenCalledWith({cid : 'c-0', name: 'cartoon world.png', id : 'c-0'}, asset);
       asset.save();
-      expect(spy).toHaveBeenCalled();
+      expect(spy.calls.count()).toEqual(2);
     });
 
     it("can fire update events", function(){
@@ -636,15 +637,18 @@ describe("Model", function(){
     it("can fire destroy events", function(){
       Asset.bind("destroy", spy);
       var asset = Asset.create({name: "cartoon world.png"});
+      expect(spy).not.toHaveBeenCalled();
       asset.destroy();
       expect(spy).toHaveBeenCalledWith(asset, {clear: true});
     });
 
-    it("can fire destroy events when destroy all record with options", function(){
+    it("can fire destroy events when destroyAll is called with options", function(){
       Asset.bind("destroy", spy);
       var asset = Asset.create({name: "screaming goats.png"});
+      expect(spy).not.toHaveBeenCalled();
       Asset.destroyAll({ajax: false});
-      expect(spy).toHaveBeenCalledWith(asset, {ajax: false, clear: true});
+      expect(spy).toHaveBeenCalled();
+      expect(spy).toHaveBeenCalledWith(jasmine.objectContaining(asset.attributes()), {ajax: false, clear: true});
     });
 
     it("can fire refresh events", function(){
