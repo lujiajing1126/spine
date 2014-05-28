@@ -36,11 +36,12 @@ describe("Ajax", function(){
     User.fetch();
 
     expect(jQuery.ajax).toHaveBeenCalledWith({
-      type:         'GET',
-      headers:      { 'X-Requested-With' : 'XMLHttpRequest' },
       dataType:     'json',
+      processData:  false,
+      headers:      { 'X-Requested-With' : 'XMLHttpRequest' },
+      type:         'GET',
       url:          '/users',
-      processData:  false
+      data:         undefined
     });
   });
 
@@ -51,11 +52,12 @@ describe("Ajax", function(){
     User.fetch();
 
     expect(jQuery.ajax).toHaveBeenCalledWith({
-      type:         'POST',
-      headers:      { 'X-Requested-With' : 'XMLHttpRequest' },
       dataType:     'json',
+      processData:  false,
+      headers:      { 'X-Requested-With' : 'XMLHttpRequest' },
+      type:         'POST',
       url:          '/users',
-      processData:  false
+      data:         undefined
     });
   });
 
@@ -67,11 +69,12 @@ describe("Ajax", function(){
     User.fetch({id: "IDD"});
 
     expect(jQuery.ajax).toHaveBeenCalledWith({
-      type:         'GET',
-      headers:      { 'X-Requested-With' : 'XMLHttpRequest' },
       dataType:     'json',
+      processData:  false,
+      headers:      { 'X-Requested-With' : 'XMLHttpRequest' },
+      type:         'GET',
       url:          '/users/IDD',
-      processData:  false
+      data:         undefined
     });
   });
 
@@ -84,11 +87,12 @@ describe("Ajax", function(){
     User.fetch({id: "IDD"});
 
     expect(jQuery.ajax).toHaveBeenCalledWith({
-      type:         'POST',
-      headers:      { 'X-Requested-With' : 'XMLHttpRequest' },
       dataType:     'json',
+      processData:  false,
+      headers:      { 'X-Requested-With' : 'XMLHttpRequest' },
+      type:         'POST',
       url:          '/users/IDD',
-      processData:  false
+      data:         undefined
     });
   });
 
@@ -111,13 +115,13 @@ describe("Ajax", function(){
     User.create({first: "Hans", last: "Zimmer", id: "IDD"});
 
     expect(jQuery.ajax).toHaveBeenCalledWith({
-      type:         'POST',
-      headers:      { 'X-Requested-With' : 'XMLHttpRequest' },
-      contentType:  'application/json',
       dataType:     'json',
-      data:         '{"first":"Hans","last":"Zimmer","id":"IDD"}',
+      processData:  false,
+      headers:      { 'X-Requested-With' : 'XMLHttpRequest' },
+      type:         'POST',
+      contentType:  'application/json',
       url:          '/users',
-      processData:  false
+      data:         '{"first":"Hans","last":"Zimmer","id":"IDD"}'
     });
   });
 
@@ -183,11 +187,12 @@ describe("Ajax", function(){
     User.first().destroy();
 
     expect(jQuery.ajax).toHaveBeenCalledWith({
-      headers:     { 'X-Requested-With' : 'XMLHttpRequest' },
       dataType:   'json',
       processData: false,
+      headers:     { 'X-Requested-With' : 'XMLHttpRequest' },
       type:        'DELETE',
-      url:         '/users/IDD'
+      url:         '/users/IDD',
+      data:        undefined
     });
   });
 
@@ -201,10 +206,11 @@ describe("Ajax", function(){
 
     expect(jQuery.ajax).toHaveBeenCalledWith({
       headers:     { 'X-Requested-With' : 'XMLHttpRequest' },
-      dataType:   'json',
+      dataType:    'json',
       processData: false,
       type:        'POST',
-      url:         '/users/IDD'
+      url:         '/users/IDD',
+      data:        undefined
     });
   });
 
@@ -243,9 +249,10 @@ describe("Ajax", function(){
 
     var newAtts = {id: "IDD2"};
     jqXHR.resolve(newAtts);
-
-    expect(User.first().id).toEqual("IDD2");
-    expect(User.irecords["IDD2"]).toEqual(User.first());
+    
+    var first = User.first()
+    expect(first.id).toEqual("IDD2");
+    expect(User.irecords["IDD2"].id).toEqual(first.id);
   });
 
   it("can update record IDs for already queued requests", function(){
@@ -518,7 +525,8 @@ describe("Ajax", function(){
       headers:      { 'X-Requested-With' : 'XMLHttpRequest' },
       dataType:     'json',
       url:          '/people',
-      processData:  false
+      processData:  false,
+      data:         undefined
     });
   });
 
@@ -548,7 +556,8 @@ describe("Ajax", function(){
       headers:      { 'X-Requested-With' : 'XMLHttpRequest' },
       dataType:     'json',
       url:          '/people',
-      processData:  false
+      processData:  false,
+      data:         undefined
     });
   });
 
