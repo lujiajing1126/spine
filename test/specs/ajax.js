@@ -266,7 +266,6 @@ describe("Ajax", function(){
     var newAtts = {id: "IDD"};
     jqXHR.resolve(newAtts);
 
-
     updateAjaxRequest = jQuery.ajax.calls.mostRecent().args[0]
     expect(updateAjaxRequest.url).toBe("/users/IDD")
   });
@@ -343,20 +342,20 @@ describe("Ajax", function(){
     jQuery.ajax.calls.reset();
   });
 
-  it("should still respect promises if requests done in parallel", function() {
-    spyOn(jQuery, "ajax").and.returnValue(jqXHR);
-    user1 = User.create({first: "First"}, {parallel:true});
-    user2 = User.create({first: "Second"}, {parallel:true});
-    expect(jQuery.ajax.calls.count()).toEqual(2);
-    jqXHR.resolve();
-    
-    user1.first = 'firstUpdated';
-    user2.first = 'secondUpdated';
-    
+  describe("the request queue that runs asyncronosly", function() {
+    var counter = 0;
     var promiseTimingTest = [{},{}];
-    var counter = 0
     
-    runs(function() {
+    beforeEach(function(done){
+      spyOn(jQuery, "ajax").and.returnValue(jqXHR);
+      user1 = User.create({first: "First"}, {parallel:true});
+      user2 = User.create({first: "Second"}, {parallel:true});
+      expect(jQuery.ajax.calls.count()).toEqual(2);
+      jqXHR.resolve();
+      
+      user1.first = 'firstUpdated';
+      user2.first = 'secondUpdated';
+    
       user1.bind('ajaxSuccess', function(){
         counter++;
         promiseTimingTest[0].first = this.first;
@@ -370,17 +369,19 @@ describe("Ajax", function(){
       user1.save({parallel:true});
       user2.save({parallel:true});
       jqXHR.resolve();
+      done();
     });
     
-    waitsFor(function() {
-      return counter == 2;
-    }, 'promises should have returned', 1000);
-    
-    runs(function(){
+    it("should still respect promises if requests done in parallel", function(done) {
+      expect(counter).toBe(2);
       expect(promiseTimingTest[0].first).toEqual('firstUpdated');
       expect(promiseTimingTest[1].first).toEqual('secondUpdated');
+      done();
     });
-    jQuery.ajax.calls.reset();
+    
+    afterEach(function(){
+      jQuery.ajax.calls.reset();
+    })
   });
 
   it("should allow promise objects to abort the request and dequeue", function(){
